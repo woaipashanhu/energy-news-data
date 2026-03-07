@@ -21,151 +21,151 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
             background: #000000;
-            color: #e0e0e0;
+            color: #b0b0b0;
             min-height: 100vh;
             overflow-x: hidden;
             padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
+            padding-bottom: calc(60px + env(safe-area-inset-bottom));
         }
 
-        /* ========== 顶部导航 ========== */
+        /* ========== 顶部标题 ========== */
         .header {
-            position: sticky;
-            top: 0;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             padding: 16px;
             padding-top: calc(16px + env(safe-area-inset-top));
-            border-bottom: 0.5px solid #333;
-            z-index: 100;
+            text-align: center;
+            border-bottom: 0.5px solid #222;
         }
 
         .header-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
-            color: #0a84ff;
+            color: #e0e0e0;
         }
 
         .header-meta {
-            font-size: 12px;
-            color: #8e8e93;
-            margin-top: 4px;
+            font-size: 13px;
+            color: #666;
+            margin-top: 6px;
         }
 
-        /* ========== 分类标签 ========== */
-        .category-tabs {
-            display: flex;
-            overflow-x: auto;
-            padding: 12px 16px;
-            gap: 8px;
+        /* ========== 底部导航栏 ========== */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
             background: #0a0a0a;
-            -webkit-overflow-scrolling: touch;
+            border-top: 0.5px solid #222;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            padding-bottom: calc(10px + env(safe-area-inset-bottom));
+            z-index: 100;
         }
 
-        .category-tabs::-webkit-scrollbar {
-            display: none;
-        }
-
-        .category-tab {
-            padding: 8px 16px;
-            background: #1c1c1e;
-            border: none;
-            border-radius: 20px;
-            color: #8e8e93;
-            font-size: 14px;
-            white-space: nowrap;
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .category-tab.active {
-            background: #0a84ff;
-            color: #ffffff;
+        .nav-item .icon {
+            font-size: 22px;
+            margin-bottom: 4px;
         }
 
-        .category-tab:active {
-            transform: scale(0.95);
+        .nav-item .label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .nav-item.active .label {
+            color: #0a84ff;
+            font-weight: 600;
+        }
+
+        .nav-item.active .icon {
+            color: #0a84ff;
         }
 
         /* ========== 新闻列表 ========== */
         .news-list {
-            padding: 16px;
+            padding: 12px 16px;
         }
 
-        .news-card {
-            background: #1c1c1e;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: transform 0.15s, opacity 0.15s;
+        .news-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 14px 0;
+            border-bottom: 0.5px solid #1a1a1a;
         }
 
-        .news-card:active {
-            transform: scale(0.98);
-            opacity: 0.8;
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-index {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0a84ff;
+            min-width: 28px;
+            padding-top: 2px;
+        }
+
+        .news-content {
+            flex: 1;
+            min-width: 0;
         }
 
         .news-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #e0e0e0;
-            line-height: 1.4;
-            margin-bottom: 8px;
+            font-size: 17px;
+            font-weight: 500;
+            color: #c8c8c8;
+            line-height: 1.5;
+            margin-bottom: 10px;
         }
 
-        .news-meta {
+        .news-actions {
             display: flex;
-            align-items: center;
             gap: 8px;
-            flex-wrap: wrap;
         }
 
-        .news-source {
-            font-size: 12px;
-            color: #0a84ff;
+        .action-btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.15s;
         }
 
-        .news-date {
-            font-size: 12px;
-            color: #8e8e93;
+        .link-btn {
+            background: #0a84ff;
+            color: #fff;
         }
 
-        .news-categories {
-            display: flex;
-            gap: 4px;
-            margin-top: 8px;
+        .link-btn:active {
+            background: #0070e0;
+            transform: scale(0.95);
         }
 
-        .news-category-tag {
-            padding: 2px 8px;
+        .share-btn {
             background: #2c2c2e;
-            border-radius: 4px;
-            font-size: 11px;
-            color: #a0a0a0;
+            color: #b0b0b0;
         }
 
-        .news-keywords {
-            display: flex;
-            gap: 4px;
-            margin-top: 6px;
-            flex-wrap: wrap;
-        }
-
-        .news-keyword {
-            padding: 1px 6px;
-            background: rgba(10, 132, 255, 0.15);
-            border-radius: 3px;
-            font-size: 10px;
-            color: #0a84ff;
+        .share-btn:active {
+            background: #3a3a3c;
+            transform: scale(0.95);
         }
 
         /* ========== 空状态 ========== */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: #8e8e93;
+            color: #555;
         }
 
         .empty-state .icon {
@@ -177,44 +177,27 @@
         .loading {
             text-align: center;
             padding: 40px;
-            color: #8e8e93;
+            color: #555;
         }
 
-        .loading::after {
-            content: '';
-            animation: dots 1.5s infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
-        }
-
-        /* ========== 统计信息 ========== */
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            padding: 16px;
+        /* ========== Toast 提示 ========== */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
             background: #1c1c1e;
-            margin: 0 16px 16px;
-            border-radius: 12px;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.2s;
         }
 
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #0a84ff;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: #8e8e93;
-            margin-top: 4px;
+        .toast.show {
+            opacity: 1;
         }
     </style>
 </head>
@@ -224,40 +207,133 @@
         <div class="header-meta" id="updateTime">加载中...</div>
     </div>
 
-    <div class="category-tabs" id="categoryTabs">
-        <button class="category-tab active" data-category="all">全部</button>
-    </div>
-
-    <div class="stats" id="stats" style="display: none;">
-        <div class="stat-item">
-            <div class="stat-value" id="totalCount">0</div>
-            <div class="stat-label">新闻总数</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value" id="sourceCount">0</div>
-            <div class="stat-label">数据来源</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value" id="todayCount">0</div>
-            <div class="stat-label">今日新增</div>
-        </div>
-    </div>
-
     <div class="news-list" id="newsList">
-        <div class="loading">正在加载新闻数据</div>
+        <div class="loading">正在加载...</div>
     </div>
+
+    <nav class="nav-bar">
+        <div class="nav-item active" data-category="policy" onclick="switchCategory('policy')">
+            <div class="icon">📋</div>
+            <div class="label">政策法规</div>
+        </div>
+        <div class="nav-item" data-category="industry" onclick="switchCategory('industry')">
+            <div class="icon">📊</div>
+            <div class="label">行业新闻</div>
+        </div>
+        <div class="nav-item" data-category="enterprise" onclick="switchCategory('enterprise')">
+            <div class="icon">🏢</div>
+            <div class="label">企业新闻</div>
+        </div>
+    </nav>
+
+    <div class="toast" id="toast"></div>
 
     <script>
         // ========== 配置 ==========
         const DATA_URL = 'https://cdn.jsdelivr.net/gh/woaipashanhu/energy-news-data/data.json';
         
-        // 如果本地测试，使用本地数据
-        // const DATA_URL = 'data.json';
+        // 测试数据（实际使用时删除）
+        const TEST_DATA = {
+            lastUpdate: "2026-03-07T16:30:00Z",
+            news: [
+                {
+                    id: "1",
+                    title: "工信部等六部门发布绿色消费推进行动通知 20条举措护航十五五绿色转型",
+                    link: "https://www.news.cn/energy/20260105/9bfbc0e4418c45feae2fb9bea3adc6c5/c.html",
+                    categories: ["政策法规"],
+                    publishDate: "2026-01-05"
+                },
+                {
+                    id: "2",
+                    title: "全国政协委员江毅：构建新型电力系统 推动能源绿色低碳高质量发展",
+                    link: "https://www.news.cn/energy/20260306/f0ab51cb21b641c3b01af30b678a09ed/c.html",
+                    categories: ["企业新闻"],
+                    publishDate: "2026-03-06"
+                },
+                {
+                    id: "3",
+                    title: "国家电网公司员工当选2025年大国工匠年度人物",
+                    link: "https://www.news.cn/energy/20260305/59963459f9f44a7bb7444bbd84039d60/c.html",
+                    categories: ["企业新闻"],
+                    publishDate: "2026-03-05"
+                },
+                {
+                    id: "4",
+                    title: "全国人大代表王政涛：强化晋电对京津冀地区的供电保障能力",
+                    link: "https://www.news.cn/energy/20260306/0825abfe257642949523ca1ba7cbef3e/c.html",
+                    categories: ["企业新闻"],
+                    publishDate: "2026-03-06"
+                },
+                {
+                    id: "5",
+                    title: "全国政协委员阮前途：推动构建超大城市新型电力系统",
+                    link: "https://www.news.cn/energy/20260306/1524a4a5d50b4544b81d59131eb8ad02/c.html",
+                    categories: ["企业新闻"],
+                    publishDate: "2026-03-06"
+                },
+                {
+                    id: "6",
+                    title: "铜锌锡硫硒太阳能电池光电转换效率突破15%",
+                    link: "https://www.news.cn/energy/20260227/349c115450314bc5a18da69e41270668/c.html",
+                    categories: ["行业新闻"],
+                    publishDate: "2026-02-27"
+                },
+                {
+                    id: "7",
+                    title: "陕京管道系统累计输气量突破8000亿立方米",
+                    link: "https://www.news.cn/energy/20260226/f8872f265a6e4897927462d8b5249df6/c.html",
+                    categories: ["行业新闻"],
+                    publishDate: "2026-02-26"
+                },
+                {
+                    id: "8",
+                    title: "我国最大的煤岩气田年产能突破40亿立方米",
+                    link: "https://www.news.cn/energy/20260306/5f9aa95e9289493aa2dee2a6867349a9/c.html",
+                    categories: ["行业新闻"],
+                    publishDate: "2026-03-06"
+                },
+                {
+                    id: "9",
+                    title: "代表委员话核能：多维发力推动核工业高质量发展",
+                    link: "https://www.news.cn/energy/20260306/e89bd7953be04009a1ca945927d056b0/c.html",
+                    categories: ["行业新闻"],
+                    publishDate: "2026-03-06"
+                },
+                {
+                    id: "10",
+                    title: "全国政协委员马永生：统筹氢能产业链科产融合 推动规模化高质量发展",
+                    link: "https://www.news.cn/energy/20260306/7967e30a337845b59dfc3ef5eb0e4b99/c.html",
+                    categories: ["企业新闻"],
+                    publishDate: "2026-03-06"
+                },
+                {
+                    id: "11",
+                    title: "光伏反内卷：应以创新破局，以精准施策护航",
+                    link: "https://www.news.cn/energy/20260115/a9f19c16b4254fb8aa7979ef478e896a/c.html",
+                    categories: ["行业新闻"],
+                    publishDate: "2026-01-15"
+                },
+                {
+                    id: "12",
+                    title: "中国石化胜利油田规模化绿热工业应用获进展",
+                    link: "https://www.news.cn/energy/20260212/f17a526e84694f49b10dce5589c60bf7/c.html",
+                    categories: ["行业新闻"],
+                    publishDate: "2026-02-12"
+                }
+            ]
+        };
 
         // ========== 全局状态 ==========
         let allNews = [];
-        let currentCategory = 'all';
-        const categories = new Set(['全部']);
+        let currentCategory = 'policy'; // 默认显示政策法规
+        let useTestData = true; // 使用测试数据
+
+        // 分类映射
+        const CATEGORY_MAP = {
+            'policy': '政策法规',
+            'industry': '行业新闻',
+            'enterprise': '企业新闻'
+        };
 
         // ========== 初始化 ==========
         document.addEventListener('DOMContentLoaded', () => {
@@ -266,6 +342,16 @@
 
         // ========== 加载数据 ==========
         async function loadData() {
+            // 先使用测试数据
+            if (useTestData) {
+                allNews = TEST_DATA.news;
+                document.getElementById('updateTime').textContent = 
+                    `更新时间: ${formatTime(TEST_DATA.lastUpdate)}`;
+                renderNews();
+                return;
+            }
+
+            // 实际使用时从 GitHub 加载
             try {
                 const response = await fetch(DATA_URL + '?t=' + Date.now());
                 if (!response.ok) throw new Error('加载数据失败');
@@ -273,67 +359,24 @@
                 const data = await response.json();
                 allNews = data.news || [];
                 
-                // 更新时间
                 document.getElementById('updateTime').textContent = 
                     `更新时间: ${formatTime(data.lastUpdate)}`;
                 
-                // 提取分类
-                allNews.forEach(news => {
-                    if (news.categories) {
-                        news.categories.forEach(cat => categories.add(cat));
-                    }
-                });
-                
-                // 渲染分类标签
-                renderCategoryTabs();
-                
-                // 渲染新闻列表
                 renderNews();
-                
-                // 渲染统计
-                renderStats();
-                
             } catch (error) {
                 console.error('加载数据失败:', error);
                 document.getElementById('newsList').innerHTML = 
-                    '<div class="empty-state"><div class="icon">⚠️</div><div>加载数据失败，请稍后重试</div></div>';
+                    '<div class="empty-state"><div class="icon">⚠️</div><div>加载数据失败</div></div>';
             }
         }
 
-        // ========== 渲染分类标签 ==========
-        function renderCategoryTabs() {
-            const container = document.getElementById('categoryTabs');
-            const categoryNames = {
-                'all': '全部',
-                '政策法规': '政策法规',
-                '行业动态': '行业动态',
-                '企业新闻': '企业新闻',
-                '新能源': '新能源',
-                '电力': '电力',
-                '石油天然气': '石油天然气',
-                '核能': '核能',
-                '国际能源': '国际能源'
-            };
-            
-            const sortedCategories = ['全部', '政策法规', '企业新闻', '行业动态', '新能源', '电力', '石油天然气', '核能', '国际能源'];
-            
-            container.innerHTML = sortedCategories
-                .filter(cat => categories.has(cat) || cat === '全部')
-                .map(cat => {
-                    const key = cat === '全部' ? 'all' : cat;
-                    return `<button class="category-tab ${currentCategory === key ? 'active' : ''}" 
-                                    data-category="${key}"
-                                    onclick="filterByCategory('${key}')">${cat}</button>`;
-                }).join('');
-        }
-
-        // ========== 筛选分类 ==========
-        function filterByCategory(category) {
+        // ========== 切换分类 ==========
+        function switchCategory(category) {
             currentCategory = category;
             
-            // 更新标签状态
-            document.querySelectorAll('.category-tab').forEach(tab => {
-                tab.classList.toggle('active', tab.dataset.category === category);
+            // 更新导航栏状态
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.category === category);
             });
             
             renderNews();
@@ -342,14 +385,16 @@
         // ========== 渲染新闻列表 ==========
         function renderNews() {
             const container = document.getElementById('newsList');
+            const targetCategory = CATEGORY_MAP[currentCategory];
             
-            // 筛选
-            let filteredNews = allNews;
-            if (currentCategory !== 'all') {
-                filteredNews = allNews.filter(news => 
-                    news.categories && news.categories.includes(currentCategory)
-                );
-            }
+            // 筛选当前分类的新闻
+            let filteredNews = allNews.filter(news => {
+                if (news.categories && news.categories.length > 0) {
+                    return news.categories.includes(targetCategory);
+                }
+                // 没有分类的归为行业新闻
+                return currentCategory === 'industry';
+            });
             
             // 按日期排序
             filteredNews.sort((a, b) => {
@@ -363,43 +408,65 @@
                 return;
             }
             
-            container.innerHTML = filteredNews.map(news => `
-                <div class="news-card" onclick="openNews('${escapeHtml(news.link)}')">
-                    <div class="news-title">${escapeHtml(news.title)}</div>
-                    <div class="news-meta">
-                        <span class="news-source">${escapeHtml(news.source)}</span>
-                        <span class="news-date">${escapeHtml(news.publishDate || news.crawlDate)}</span>
+            container.innerHTML = filteredNews.map((news, index) => `
+                <div class="news-item">
+                    <div class="news-index">${index + 1}</div>
+                    <div class="news-content">
+                        <div class="news-title">${escapeHtml(news.title)}</div>
+                        <div class="news-actions">
+                            <button class="action-btn link-btn" onclick="openLink('${escapeHtml(news.link)}')">链接</button>
+                            <button class="action-btn share-btn" onclick="shareNews('${escapeHtml(news.title)}', '${escapeHtml(news.link)}')">分享</button>
+                        </div>
                     </div>
-                    ${news.categories && news.categories.length > 0 ? `
-                        <div class="news-categories">
-                            ${news.categories.map(cat => `<span class="news-category-tag">${escapeHtml(cat)}</span>`).join('')}
-                        </div>
-                    ` : ''}
-                    ${news.keywords && news.keywords.length > 0 ? `
-                        <div class="news-keywords">
-                            ${news.keywords.map(kw => `<span class="news-keyword">${escapeHtml(kw)}</span>`).join('')}
-                        </div>
-                    ` : ''}
                 </div>
             `).join('');
         }
 
-        // ========== 渲染统计 ==========
-        function renderStats() {
-            document.getElementById('stats').style.display = 'flex';
-            document.getElementById('totalCount').textContent = allNews.length;
-            
-            const sources = new Set(allNews.map(n => n.source));
-            document.getElementById('sourceCount').textContent = sources.size;
-            
-            const today = new Date().toISOString().split('T')[0];
-            const todayNews = allNews.filter(n => n.crawlDate === today);
-            document.getElementById('todayCount').textContent = todayNews.length;
+        // ========== 打开链接 ==========
+        function openLink(link) {
+            window.open(link, '_blank');
         }
 
-        // ========== 打开新闻 ==========
-        function openNews(link) {
-            window.open(link, '_blank');
+        // ========== 分享新闻 ==========
+        async function shareNews(title, link) {
+            const shareData = {
+                title: title,
+                text: title,
+                url: link
+            };
+
+            // 尝试使用原生分享 API
+            if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+                try {
+                    await navigator.share(shareData);
+                    return;
+                } catch (err) {
+                    // 用户取消或其他错误，回退到复制链接
+                }
+            }
+
+            // 回退：复制链接到剪贴板
+            try {
+                await navigator.clipboard.writeText(link);
+                showToast('链接已复制');
+            } catch (err) {
+                // 兼容旧浏览器
+                const textArea = document.createElement('textarea');
+                textArea.value = link;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast('链接已复制');
+            }
+        }
+
+        // ========== Toast 提示 ==========
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
         // ========== 工具函数 ==========
@@ -414,7 +481,6 @@
             if (!isoString) return '未知';
             const date = new Date(isoString);
             return date.toLocaleString('zh-CN', {
-                year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
                 hour: '2-digit',
