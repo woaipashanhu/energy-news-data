@@ -88,37 +88,53 @@
             transform: scale(0.95);
         }
 
+        /* ========== 分类区块 ========== */
+        .category-section {
+            padding: 16px;
+        }
+
+        .category-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a84ff;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+        }
+
         /* ========== 新闻列表 ========== */
         .news-list {
-            padding: 16px;
+            padding: 0;
         }
 
         .news-card {
             background: #1c1c1e;
             border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: transform 0.15s, opacity 0.15s;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
         }
 
-        .news-card:active {
-            transform: scale(0.98);
-            opacity: 0.8;
+        .news-content {
+            flex: 1;
+            cursor: pointer;
         }
 
         .news-title {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 500;
             color: #e0e0e0;
             line-height: 1.4;
-            margin-bottom: 8px;
         }
 
         .news-meta {
             display: flex;
             align-items: center;
             gap: 8px;
+            margin-top: 6px;
             flex-wrap: wrap;
         }
 
@@ -132,39 +148,28 @@
             color: #8e8e93;
         }
 
-        .news-categories {
-            display: flex;
-            gap: 4px;
-            margin-top: 8px;
-        }
-
-        .news-category-tag {
-            padding: 2px 8px;
+        /* ========== 分享按钮 ========== */
+        .share-btn {
+            padding: 8px 12px;
             background: #2c2c2e;
-            border-radius: 4px;
-            font-size: 11px;
-            color: #a0a0a0;
-        }
-
-        .news-keywords {
-            display: flex;
-            gap: 4px;
-            margin-top: 6px;
-            flex-wrap: wrap;
-        }
-
-        .news-keyword {
-            padding: 1px 6px;
-            background: rgba(10, 132, 255, 0.15);
-            border-radius: 3px;
-            font-size: 10px;
+            border: none;
+            border-radius: 8px;
             color: #0a84ff;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .share-btn:active {
+            background: #3c3c3e;
+            transform: scale(0.95);
         }
 
         /* ========== 空状态 ========== */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
             color: #8e8e93;
         }
 
@@ -190,32 +195,6 @@
             40% { content: '..'; }
             60%, 100% { content: '...'; }
         }
-
-        /* ========== 统计信息 ========== */
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            padding: 16px;
-            background: #1c1c1e;
-            margin: 0 16px 16px;
-            border-radius: 12px;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #0a84ff;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: #8e8e93;
-            margin-top: 4px;
-        }
     </style>
 </head>
 <body>
@@ -226,36 +205,25 @@
 
     <div class="category-tabs" id="categoryTabs">
         <button class="category-tab active" data-category="all">全部</button>
+        <button class="category-tab" data-category="政策法规">政策法规</button>
+        <button class="category-tab" data-category="企业新闻">企业新闻</button>
+        <button class="category-tab" data-category="行业新闻">行业新闻</button>
     </div>
 
-    <div class="stats" id="stats" style="display: none;">
-        <div class="stat-item">
-            <div class="stat-value" id="totalCount">0</div>
-            <div class="stat-label">新闻总数</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value" id="sourceCount">0</div>
-            <div class="stat-label">数据来源</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value" id="todayCount">0</div>
-            <div class="stat-label">今日新增</div>
-        </div>
-    </div>
-
-    <div class="news-list" id="newsList">
+    <div id="content">
         <div class="loading">正在加载新闻数据</div>
     </div>
 
     <script>
         // ========== 配置 ==========
-        // 数据来源：GitHub + jsDelivr CDN 加速（加时间戳避免缓存）
         const DATA_URL = 'https://cdn.jsdelivr.net/gh/woaipashanhu/energy-news-data/data.json';
 
         // ========== 全局状态 ==========
         let allNews = [];
         let currentCategory = 'all';
-        const categories = new Set(['全部']);
+
+        // ========== 分类顺序 ==========
+        const CATEGORY_ORDER = ['政策法规', '企业新闻', '行业新闻'];
 
         // ========== 初始化 ==========
         document.addEventListener('DOMContentLoaded', () => {
@@ -273,56 +241,16 @@
                 
                 // 更新时间
                 document.getElementById('updateTime').textContent = 
-                    `更新时间: ${formatTime(data.lastUpdate)}`;
+                    `更新时间: ${formatTime(data.lastUpdate)} · 共 ${allNews.length} 条`;
                 
-                // 提取分类
-                allNews.forEach(news => {
-                    if (news.categories) {
-                        news.categories.forEach(cat => categories.add(cat));
-                    }
-                });
-                
-                // 渲染分类标签
-                renderCategoryTabs();
-                
-                // 渲染新闻列表
-                renderNews();
-                
-                // 渲染统计
-                renderStats();
+                // 渲染内容
+                renderContent();
                 
             } catch (error) {
                 console.error('加载数据失败:', error);
-                document.getElementById('newsList').innerHTML = 
+                document.getElementById('content').innerHTML = 
                     '<div class="empty-state"><div class="icon">⚠️</div><div>加载数据失败，请稍后重试</div></div>';
             }
-        }
-
-        // ========== 渲染分类标签 ==========
-        function renderCategoryTabs() {
-            const container = document.getElementById('categoryTabs');
-            const categoryNames = {
-                'all': '全部',
-                '政策法规': '政策法规',
-                '行业动态': '行业动态',
-                '企业新闻': '企业新闻',
-                '新能源': '新能源',
-                '电力': '电力',
-                '石油天然气': '石油天然气',
-                '核能': '核能',
-                '国际能源': '国际能源'
-            };
-            
-            const sortedCategories = ['全部', '政策法规', '企业新闻', '行业动态', '新能源', '电力', '石油天然气', '核能', '国际能源'];
-            
-            container.innerHTML = sortedCategories
-                .filter(cat => categories.has(cat) || cat === '全部')
-                .map(cat => {
-                    const key = cat === '全部' ? 'all' : cat;
-                    return `<button class="category-tab ${currentCategory === key ? 'active' : ''}" 
-                                    data-category="${key}"
-                                    onclick="filterByCategory('${key}')">${cat}</button>`;
-                }).join('');
         }
 
         // ========== 筛选分类 ==========
@@ -334,70 +262,94 @@
                 tab.classList.toggle('active', tab.dataset.category === category);
             });
             
-            renderNews();
+            renderContent();
+        }
+
+        // ========== 渲染内容 ==========
+        function renderContent() {
+            const container = document.getElementById('content');
+            
+            if (currentCategory === 'all') {
+                // 分三类展示
+                container.innerHTML = CATEGORY_ORDER.map(cat => {
+                    const news = getNewsByCategory(cat);
+                    if (news.length === 0) return '';
+                    return `
+                        <div class="category-section">
+                            <div class="category-header">${cat}</div>
+                            <div class="news-list">${renderNewsList(news)}</div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                // 单分类展示
+                const news = getNewsByCategory(currentCategory);
+                if (news.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="icon">📭</div><div>暂无相关新闻</div></div>';
+                } else {
+                    container.innerHTML = `<div class="category-section"><div class="news-list">${renderNewsList(news)}</div></div>`;
+                }
+            }
+        }
+
+        // ========== 获取分类新闻 ==========
+        function getNewsByCategory(category) {
+            return allNews
+                .filter(news => news.categories && news.categories.includes(category))
+                .sort((a, b) => {
+                    const dateA = new Date(a.publishDate || a.crawlDate);
+                    const dateB = new Date(b.publishDate || b.crawlDate);
+                    return dateB - dateA;
+                });
         }
 
         // ========== 渲染新闻列表 ==========
-        function renderNews() {
-            const container = document.getElementById('newsList');
-            
-            // 筛选
-            let filteredNews = allNews;
-            if (currentCategory !== 'all') {
-                filteredNews = allNews.filter(news => 
-                    news.categories && news.categories.includes(currentCategory)
-                );
-            }
-            
-            // 按日期排序
-            filteredNews.sort((a, b) => {
-                const dateA = new Date(a.publishDate || a.crawlDate);
-                const dateB = new Date(b.publishDate || b.crawlDate);
-                return dateB - dateA;
-            });
-            
-            if (filteredNews.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="icon">📭</div><div>暂无相关新闻</div></div>';
-                return;
-            }
-            
-            container.innerHTML = filteredNews.map(news => `
-                <div class="news-card" onclick="openNews('${escapeHtml(news.link)}')">
-                    <div class="news-title">${escapeHtml(news.title)}</div>
-                    <div class="news-meta">
-                        <span class="news-source">${escapeHtml(news.source)}</span>
-                        <span class="news-date">${escapeHtml(news.publishDate || news.crawlDate)}</span>
+        function renderNewsList(newsList) {
+            return newsList.map(news => `
+                <div class="news-card">
+                    <div class="news-content" onclick="openNews('${escapeHtml(news.link)}')">
+                        <div class="news-title">${escapeHtml(news.title)}</div>
+                        <div class="news-meta">
+                            <span class="news-source">${escapeHtml(news.source)}</span>
+                            <span class="news-date">${escapeHtml(news.publishDate || news.crawlDate)}</span>
+                        </div>
                     </div>
-                    ${news.categories && news.categories.length > 0 ? `
-                        <div class="news-categories">
-                            ${news.categories.map(cat => `<span class="news-category-tag">${escapeHtml(cat)}</span>`).join('')}
-                        </div>
-                    ` : ''}
-                    ${news.keywords && news.keywords.length > 0 ? `
-                        <div class="news-keywords">
-                            ${news.keywords.map(kw => `<span class="news-keyword">${escapeHtml(kw)}</span>`).join('')}
-                        </div>
-                    ` : ''}
+                    <button class="share-btn" onclick="shareNews(event, '${escapeHtml(news.link)}', '${escapeHtml(news.title)}')">分享</button>
                 </div>
             `).join('');
-        }
-
-        // ========== 渲染统计 ==========
-        function renderStats() {
-            document.getElementById('stats').style.display = 'flex';
-            document.getElementById('totalCount').textContent = allNews.length;
-            
-            const sources = new Set(allNews.map(n => n.source));
-            document.getElementById('sourceCount').textContent = sources.size;
-            
-            const today = new Date().toISOString().split('T')[0];
-            const todayNews = allNews.filter(n => n.crawlDate === today);
-            document.getElementById('todayCount').textContent = todayNews.length;
         }
 
         // ========== 打开新闻 ==========
         function openNews(link) {
             window.open(link, '_blank');
+        }
+
+        // ========== 分享新闻 ==========
+        async function shareNews(event, link, title) {
+            event.stopPropagation();
+            
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: title,
+                        url: link
+                    });
+                } catch (err) {
+                    // 用户取消或其他错误
+                    copyToClipboard(link);
+                }
+            } else {
+                copyToClipboard(link);
+            }
+        }
+
+        // ========== 复制到剪贴板 ==========
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('链接已复制: ' + text);
+            }).catch(() => {
+                alert(text);
+            });
         }
 
         // ========== 工具函数 ==========
@@ -412,7 +364,6 @@
             if (!isoString) return '未知';
             const date = new Date(isoString);
             return date.toLocaleString('zh-CN', {
-                year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
                 hour: '2-digit',
