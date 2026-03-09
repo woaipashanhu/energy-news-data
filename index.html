@@ -181,7 +181,11 @@
     </div>
 
     <script>
-        const DATA_URL = 'https://cdn.jsdelivr.net/gh/woaipashanhu/energy-news-data/data.json';
+        // 多数据源：jsDelivr 优先，GitHub Raw 备用
+        const DATA_SOURCES = [
+            'https://cdn.jsdelivr.net/gh/woaipashanhu/energy-news-data/data.json',
+            'https://raw.githubusercontent.com/woaipashanhu/energy-news-data/main/data.json'
+        ];
         let allNews = [];
         let currentCategory = '政策法规';
         const CATEGORIES = ['政策法规', '企业新闻', '行业新闻'];
@@ -199,16 +203,31 @@
         });
 
         async function loadData() {
-            try {
-                const response = await fetch(DATA_URL + '?t=' + Date.now());
-                const data = await response.json();
-                allNews = data.news || [];
-                document.getElementById('updateTime').textContent = formatTime(data.lastUpdate);
-                updateCounts();
-                renderNews();
-            } catch (e) {
-                document.getElementById('newsList').innerHTML = '<div class="empty-state">加载失败</div>';
+            // 尝试多个数据源
+            for (const url of DATA_SOURCES) {
+                try {
+                    // 使用 no-store 完全禁用缓存
+                    const response = await fetch(url + '?t=' + Date.now(), {
+                        cache: 'no-store',
+                        headers: { 'Cache-Control': 'no-cache' }
+                    });
+                    const data = await response.json();
+                    
+                    // 验证数据有效性
+                    if (data && data.lastUpdate && data.news) {
+                        allNews = data.news || [];
+                        document.getElementById('updateTime').textContent = formatTime(data.lastUpdate);
+                        updateCounts();
+                        renderNews();
+                        console.log('数据加载成功:', url, '更新时间:', data.lastUpdate);
+                        return; // 成功则退出
+                    }
+                } catch (e) {
+                    console.warn('数据源失败:', url, e.message);
+                }
             }
+            // 所有数据源都失败
+            document.getElementById('newsList').innerHTML = '<div class="empty-state">加载失败，请检查网络</div>';
         }
 
         function updateCounts() {
