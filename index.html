@@ -203,14 +203,13 @@
         });
 
         async function loadData() {
+            const timestamp = Date.now();
             // 尝试多个数据源
-            for (const url of DATA_SOURCES) {
+            for (const baseUrl of DATA_SOURCES) {
+                const url = baseUrl + '?t=' + timestamp;
                 try {
-                    // 使用 no-store 完全禁用缓存
-                    const response = await fetch(url + '?t=' + Date.now(), {
-                        cache: 'no-store',
-                        headers: { 'Cache-Control': 'no-cache' }
-                    });
+                    const response = await fetch(url);
+                    if (!response.ok) continue;
                     const data = await response.json();
                     
                     // 验证数据有效性
@@ -219,11 +218,11 @@
                         document.getElementById('updateTime').textContent = formatTime(data.lastUpdate);
                         updateCounts();
                         renderNews();
-                        console.log('数据加载成功:', url, '更新时间:', data.lastUpdate);
                         return; // 成功则退出
                     }
                 } catch (e) {
-                    console.warn('数据源失败:', url, e.message);
+                    console.warn('数据源失败:', baseUrl, e.message);
+                    continue; // 继续尝试下一个
                 }
             }
             // 所有数据源都失败
